@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+
+def versionBuild = 1
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def releaseNotes = ["git", "log", "--oneline", "--pretty=format:\"%an %ad: %s\"", "--date=short"].execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("dd-MM-yyyy'T'HH", TimeZone.getTimeZone("UTC"))
+
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "io.etherscan.etherscan"
+
+        minSdkVersion 15
+        targetSdkVersion 28
+
+        versionCode versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = outputFileName.replace(".apk", "-${defaultConfig.versionName}.apk")
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** RETROFIT and OKHTTP **/
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
+    /** GLIDE **/
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+
+    /** GSON **/
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    /** RX JAVA AND ANDROID RX **/
+    implementation "io.reactivex.rxjava2:rxjava:2.1.17"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+
+    /** JUNIT **/
+    testImplementation 'junit:junit:4.12'
+
+    /** ANDROIDX **/
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01'
+
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+}
