@@ -1,20 +1,19 @@
-package io.etherscan.etherscan.ui.contract;
+package io.etherscan.etherscan.ui.dashboard;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import io.etherscan.etherscan.data.model.DashboardResponse;
 import io.etherscan.etherscan.data.network.BalanceResponse;
+import io.etherscan.etherscan.data.network.DashboardResponse;
 import io.etherscan.etherscan.data.network.RestClient;
 import io.etherscan.etherscan.data.network.TransactionsResponse;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
-public class ContractViewModel extends ViewModel {
+public class DashboardViewModel extends ViewModel {
 
 
     private MutableLiveData<DashboardResponse> dashboardResponseData;
@@ -33,15 +32,12 @@ public class ContractViewModel extends ViewModel {
         Observable<TransactionsResponse> transactions = RestClient.getClient().getTransactions(address);
         Observable<BalanceResponse>      balance      = RestClient.getClient().getBalance(address);
 
-        Observable.zip(transactions, balance, new BiFunction<TransactionsResponse, BalanceResponse, DashboardResponse>() {
-            @Override
-            public DashboardResponse apply(TransactionsResponse transactionsResponse, BalanceResponse balanceResponse) throws Exception {
+        Observable.zip(transactions, balance, (transactionsResponse, balanceResponse) -> {
 
-                DashboardResponse dashboardResponse = new DashboardResponse();
-                dashboardResponse.setAdressBalance(balanceResponse);
-                dashboardResponse.setAdressBalance(balanceResponse);
-                return dashboardResponse;
-            }
+            DashboardResponse dashboardResponse = new DashboardResponse();
+            dashboardResponse.setAdressBalance(balanceResponse);
+            dashboardResponse.setTokenTransactions(transactionsResponse.getResult());
+            return dashboardResponse;
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -58,7 +54,9 @@ public class ContractViewModel extends ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        DashboardResponse dashboardResponse = new DashboardResponse();
+                        dashboardResponse.setError(true);
+                        dashboardResponseData.setValue(dashboardResponse);
                     }
 
                     @Override

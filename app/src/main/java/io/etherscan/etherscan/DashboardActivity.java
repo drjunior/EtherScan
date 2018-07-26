@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import io.etherscan.etherscan.ui.contract.ContractFragment;
+import io.etherscan.etherscan.ui.dashboard.DashboardFragment;
 
-public class ContractActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,7 +14,7 @@ public class ContractActivity extends AppCompatActivity {
         setContentView(R.layout.contract_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, ContractFragment.newInstance())
+                    .replace(R.id.container, DashboardFragment.newInstance())
                     .commitNow();
         }
     }

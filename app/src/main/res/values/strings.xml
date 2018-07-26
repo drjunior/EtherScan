@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Etherscan</string>
+
+    <string name="title_accountbalance_dashboard">Account Balance</string>
+    <string name="title_erc20balance_dashboard">ERC-20 Balance</string>
+
+    <string name="value_accountbalance_dashboard">%1$s ETH</string>
+    <string name="value_erc20balance_dashboard">%1$s ETH</string>
+
+
+    <string name="error_apiproblem_dashboard">Error getting info from API</string>
+    <string name="snackbar_retry_dashboard">Retry</string>
+
+
 </resources>

@@ -1,8 +1,8 @@
-package io.etherscan.etherscan.data.model;
+package io.etherscan.etherscan.data.network;
 
 import java.util.List;
 
-import io.etherscan.etherscan.data.network.BalanceResponse;
+import io.etherscan.etherscan.data.model.TokenTransaction;
 
 public class DashboardResponse {
 
@@ -10,7 +10,7 @@ public class DashboardResponse {
     private List<TokenTransaction> tokenTransactions;
     private BalanceResponse        adressBalance;
 
-    public Boolean getError() {
+    public Boolean isError() {
         return error;
     }
 
