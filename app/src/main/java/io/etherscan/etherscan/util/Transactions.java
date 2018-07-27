@@ -15,7 +15,7 @@ public class Transactions {
         for (TokenTransaction tokenTransaction : tokenTransactions) {
             Double transactionValue = (double) 0;
 
-            if (tokenTransaction.getFrom().equals(walletAddress)) {
+            if (tokenTransaction.getFrom().equalsIgnoreCase(walletAddress)) {
                 transactionValue -= Double.valueOf(tokenTransaction.getValue());
             } else {
                 transactionValue += Double.valueOf(tokenTransaction.getValue());

@@ -11,5 +11,7 @@
     <string name="error_apiproblem_dashboard">Error getting info from API</string>
     <string name="snackbar_retry_dashboard">Retry</string>
 
+    <string name="button_viewmore_dashboard">View more</string>
+
 
 </resources>

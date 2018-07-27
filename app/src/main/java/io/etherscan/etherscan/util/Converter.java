@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 public class Converter {
 
     @SuppressLint("DefaultLocale")
-    public static String showEthereum(String value){
-        return String.format("%.2f", Double.parseDouble(value) / Math.pow(10, 18));
+    public static String showEthereum(Double value) {
+        return String.format("%.2f", value / Math.pow(10, 18));
     }
 }

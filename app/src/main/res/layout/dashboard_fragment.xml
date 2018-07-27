@@ -33,16 +33,18 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/textview_titleaccount_dashboard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="@string/title_accountbalance_dashboard"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textview_valueaccount_dashboard"
@@ -79,7 +81,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/textview_titleerc20_dashboard"
@@ -97,6 +101,12 @@
                 android:layout_marginTop="10dp"
                 android:textSize="20sp"
                 tools:text="3.76 ETH" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/button_viewmore_dashboard" />
 
 
         </LinearLayout>
