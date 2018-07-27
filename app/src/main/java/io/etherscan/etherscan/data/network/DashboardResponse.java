@@ -1,5 +1,6 @@
 package io.etherscan.etherscan.data.network;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public class DashboardResponse {
     private Double                           erc20TokensBalance;
     private Double                           totalBalance;
     private Map<String, Map<String, String>> rates;
+    private HashMap<String, Double>          erc20tokenBalances;
 
 
     public Boolean isError() {
@@ -63,5 +65,13 @@ public class DashboardResponse {
 
     public void setTotalBalance(Double totalBalance) {
         this.totalBalance = totalBalance;
+    }
+
+    public HashMap<String, Double> getErc20tokenBalances() {
+        return erc20tokenBalances;
+    }
+
+    public void setErc20tokenBalances(HashMap<String, Double> erc20tokenBalances) {
+        this.erc20tokenBalances = erc20tokenBalances;
     }
 }

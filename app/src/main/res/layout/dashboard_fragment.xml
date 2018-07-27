@@ -5,7 +5,7 @@
     android:id="@+id/constraint_container_dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardFragment">
+    tools:context=".ui.dashboard.Erc20TokensListFragment">
 
     <!-- ACCOUNT CARDVIEW -->
     <androidx.cardview.widget.CardView

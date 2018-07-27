@@ -1,7 +1,6 @@
 package io.etherscan.etherscan.ui.dashboard;
 
-import android.util.Log;
-
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +14,7 @@ import io.etherscan.etherscan.data.network.DashboardResponse;
 import io.etherscan.etherscan.data.network.RestClient;
 import io.etherscan.etherscan.data.network.TransactionsResponse;
 import io.etherscan.etherscan.util.Rates;
+import io.etherscan.etherscan.util.Transactions;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,15 +24,17 @@ import io.reactivex.schedulers.Schedulers;
 public class DashboardViewModel extends ViewModel {
 
 
-    private MutableLiveData<DashboardResponse> dashboardResponseData;
+    private DashboardResponse                  mDashboardResponse;
+    private MutableLiveData<DashboardResponse> mDashboardResponseData;
+    private MutableLiveData<DashboardResponse> mErc20TokensListResponseData;
 
     public LiveData<DashboardResponse> getTokenTransactions(String address) {
-        if (dashboardResponseData == null) {
-            dashboardResponseData = new MutableLiveData<>();
+        if (mDashboardResponseData == null) {
+            mDashboardResponseData = new MutableLiveData<>();
             loadDashboardResponse(address);
         }
 
-        return dashboardResponseData;
+        return mDashboardResponseData;
     }
 
     private void loadDashboardResponse(String address) {
@@ -40,7 +42,7 @@ public class DashboardViewModel extends ViewModel {
 
         // get balance and transactions list
         Observable<TransactionsResponse> transactions = RestClient.getClient().getTransactions(address);
-        Observable<BalanceResponse> balance = RestClient.getClient().getBalance(address);
+        Observable<BalanceResponse>      balance      = RestClient.getClient().getBalance(address);
 
         Observable.zip(transactions, balance, (transactionsResponse, balanceResponse) -> {
 
@@ -81,7 +83,12 @@ public class DashboardViewModel extends ViewModel {
                                     @Override
                                     public void onNext(Map<String, Map<String, String>> rates) {
 
-                                        Double erc20tokensBalance = Rates.getSumOfTokensInETH(address, dashboardResponse.getTokenTransactions(), rates);
+
+                                        // calculate the sum of each token (in and out transactions sum)
+                                        HashMap<String, Double> erc20TokensBalances = Transactions.getErc20TokenBalanceTransactions(address, dashboardResponse.getTokenTransactions());
+                                        dashboardResponse.setErc20tokenBalances(erc20TokensBalances);
+
+                                        Double erc20tokensBalance = Rates.getSumOfTokensInETH(erc20TokensBalances, rates);
                                         dashboardResponse.setErc20TokensBalance(erc20tokensBalance);
                                         dashboardResponse.setRates(rates);
 
@@ -89,17 +96,19 @@ public class DashboardViewModel extends ViewModel {
                                         Double totalAccountBalance = Double.parseDouble(dashboardResponse.getAdressBalance().getResult()) + erc20tokensBalance;
                                         dashboardResponse.setTotalBalance(totalAccountBalance);
 
-                                        dashboardResponseData.setValue(dashboardResponse);
+                                        mDashboardResponseData.setValue(dashboardResponse);
+
+                                        mDashboardResponse = dashboardResponse;
                                     }
 
                                     @Override
                                     public void onError(Throwable e) {
                                         DashboardResponse dashboardResponse = new DashboardResponse();
                                         dashboardResponse.setError(true);
-                                        dashboardResponseData.setValue(dashboardResponse);
+                                        mDashboardResponseData.setValue(dashboardResponse);
 
                                         //set it to null so that it can be reinitialized in case user retries the operation
-                                        dashboardResponseData = null;
+                                        mDashboardResponseData = null;
                                     }
 
                                     @Override
@@ -115,10 +124,10 @@ public class DashboardViewModel extends ViewModel {
                     public void onError(Throwable e) {
                         DashboardResponse dashboardResponse = new DashboardResponse();
                         dashboardResponse.setError(true);
-                        dashboardResponseData.setValue(dashboardResponse);
+                        mDashboardResponseData.setValue(dashboardResponse);
 
                         //set it to null so that it can be reinitialized in case user retries the operation
-                        dashboardResponseData = null;
+                        mDashboardResponseData = null;
                     }
 
                     @Override
@@ -127,6 +136,16 @@ public class DashboardViewModel extends ViewModel {
                     }
                 });
 
+    }
+
+    public LiveData<DashboardResponse> getErc20TokenListData() {
+        if (mErc20TokensListResponseData == null) {
+            mErc20TokensListResponseData = new MutableLiveData<>();
+
+            mErc20TokensListResponseData.setValue(mDashboardResponse);
+        }
+
+        return mErc20TokensListResponseData;
     }
 
 }

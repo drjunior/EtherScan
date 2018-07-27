@@ -7,7 +7,7 @@ import io.etherscan.etherscan.data.model.TokenTransaction;
 
 public class Transactions {
 
-    public static HashMap<String, Double> getErc20TokenTransactions(String walletAddress, List<TokenTransaction> tokenTransactions) {
+    public static HashMap<String, Double> getErc20TokenBalanceTransactions(String walletAddress, List<TokenTransaction> tokenTransactions) {
 
 
         HashMap<String, Double> erc20TokensBalances = new HashMap<>();

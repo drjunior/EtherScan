@@ -1,27 +1,15 @@
 package io.etherscan.etherscan.util;
 
-import android.util.Log;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import io.etherscan.etherscan.data.model.TokenTransaction;
 
 public class Rates {
 
     /**
      * Find the sum of token transactions for each token and convert them to eth using the current rate
-     *
-     * @param address
-     * @param tokenTransactions
-     * @param rates
-     * @return
      */
-    public static Double getSumOfTokensInETH(String address, List<TokenTransaction> tokenTransactions, Map<String, Map<String, String>> rates) {
+    public static Double getSumOfTokensInETH(HashMap<String, Double> erc20TokensBalances, Map<String, Map<String, String>> rates) {
 
-        // calculate the sum of each token (in and out transactions sum)
-        HashMap<String, Double> erc20TokensBalances = Transactions.getErc20TokenTransactions(address, tokenTransactions);
 
         Double sumERC20 = (double) 0;
         for (String token : erc20TokensBalances.keySet()) {
@@ -33,7 +21,7 @@ public class Rates {
                 rate = "0";
             }
 
-            Double value = erc20TokensBalances.get(token);
+            Double value             = erc20TokensBalances.get(token);
             Double valueOfTokenInEth = value * Double.valueOf(rate);
             sumERC20 += valueOfTokenInEth;
 //            Log.d("TAG", " rate " + rate + " token: " + token + " value " + value + " final " + valueOfTokenInEth);

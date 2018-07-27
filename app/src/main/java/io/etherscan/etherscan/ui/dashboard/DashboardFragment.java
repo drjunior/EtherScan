@@ -73,7 +73,7 @@ public class DashboardFragment extends Fragment {
         showLoading();
         hideCardviews();
 
-        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(DashboardViewModel.class);
         mViewModel.getTokenTransactions(address).observe(this, dashResponse -> {
 
 
