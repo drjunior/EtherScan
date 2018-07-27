@@ -1,4 +1,7 @@
 <resources>
     <string name="title_header_erc20tokenslist">ERC-20 Tokens</string>
 
+    <string name="text_nametoken_erc20tokenslistitem"><![CDATA[<b>%1$s (%2$s)</b>]]> %3$s</string>
+    <string name="text_valueethtoken_erc20tokenslistitem">%1$s ETH</string>
+
 </resources>

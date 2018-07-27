@@ -152,7 +152,7 @@ public class TokenTransaction {
     }
 
     public String getTokenDecimal() {
-        return tokenDecimal;
+        return tokenDecimal.equalsIgnoreCase("") ? "0" : tokenDecimal;
     }
 
     public void setTokenDecimal(String tokenDecimal) {

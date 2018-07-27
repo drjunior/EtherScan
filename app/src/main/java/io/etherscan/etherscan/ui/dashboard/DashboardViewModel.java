@@ -8,6 +8,7 @@ import java.util.Set;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.etherscan.etherscan.data.model.Token;
 import io.etherscan.etherscan.data.model.TokenTransaction;
 import io.etherscan.etherscan.data.network.BalanceResponse;
 import io.etherscan.etherscan.data.network.DashboardResponse;
@@ -85,7 +86,7 @@ public class DashboardViewModel extends ViewModel {
 
 
                                         // calculate the sum of each token (in and out transactions sum)
-                                        HashMap<String, Double> erc20TokensBalances = Transactions.getErc20TokenBalanceTransactions(address, dashboardResponse.getTokenTransactions());
+                                        HashMap<Token, Double> erc20TokensBalances = Transactions.getErc20TokenBalanceTransactions(address, dashboardResponse.getTokenTransactions());
                                         dashboardResponse.setErc20tokenBalances(erc20TokensBalances);
 
                                         Double erc20tokensBalance = Rates.getSumOfTokensInETH(erc20TokensBalances, rates);

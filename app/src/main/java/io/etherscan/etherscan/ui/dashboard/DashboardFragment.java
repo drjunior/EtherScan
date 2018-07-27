@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -16,6 +17,7 @@ import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import io.etherscan.etherscan.R;
+import io.etherscan.etherscan.ui.erc20tokenslist.Erc20TokensListFragment;
 import io.etherscan.etherscan.util.Converter;
 
 public class DashboardFragment extends Fragment {
@@ -50,6 +52,12 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        initViews(view);
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void initViews(View view) {
+
         mTextViewValueAccount = view.findViewById(R.id.textview_valueaccount_dashboard);
         mTextViewValueErc20 = view.findViewById(R.id.textview_valueerc20_dashboard);
         mConstraint = view.findViewById(R.id.constraint_container_dashboard);
@@ -57,7 +65,13 @@ public class DashboardFragment extends Fragment {
         mCardViewAccount = view.findViewById(R.id.cardview_account_dashboard);
         mCardViewErc20 = view.findViewById(R.id.cardview_erc20_dashboard);
 
-        super.onViewCreated(view, savedInstanceState);
+        Button viewMore = view.findViewById(R.id.button_viewmore_dashboard);
+
+        viewMore.setOnClickListener(view1 -> getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, Erc20TokensListFragment.newInstance())
+                .addToBackStack(null)
+                .commit());
+
     }
 
     @Override
@@ -81,9 +95,9 @@ public class DashboardFragment extends Fragment {
             if (!dashResponse.isError()) {
 
                 showCardviews();
-                mTextViewValueAccount.setText(getString(R.string.value_accountbalance_dashboard, Converter.showEthereum(dashResponse.getTotalBalance())));
+                mTextViewValueAccount.setText(getString(R.string.value_accountbalance_dashboard, Converter.showEthereum2f(dashResponse.getTotalBalance())));
                 mTextViewValueErc20.setText(getString(R.string.value_erc20balance_dashboard,
-                        Converter.showEthereum(dashResponse.getErc20TokensBalance())));
+                        Converter.showEthereum2f(dashResponse.getErc20TokensBalance())));
             } else {
 
                 // show snackbar with error message in case an API error happened and allow the user to retry

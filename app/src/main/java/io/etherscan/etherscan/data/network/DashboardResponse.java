@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.etherscan.etherscan.data.model.Token;
 import io.etherscan.etherscan.data.model.TokenTransaction;
 
 public class DashboardResponse {
@@ -14,7 +15,7 @@ public class DashboardResponse {
     private Double                           erc20TokensBalance;
     private Double                           totalBalance;
     private Map<String, Map<String, String>> rates;
-    private HashMap<String, Double>          erc20tokenBalances;
+    private HashMap<Token, Double>          erc20tokenBalances;
 
 
     public Boolean isError() {
@@ -67,11 +68,11 @@ public class DashboardResponse {
         this.totalBalance = totalBalance;
     }
 
-    public HashMap<String, Double> getErc20tokenBalances() {
+    public HashMap<Token, Double> getErc20tokenBalances() {
         return erc20tokenBalances;
     }
 
-    public void setErc20tokenBalances(HashMap<String, Double> erc20tokenBalances) {
+    public void setErc20tokenBalances(HashMap<Token, Double> erc20tokenBalances) {
         this.erc20tokenBalances = erc20tokenBalances;
     }
 }

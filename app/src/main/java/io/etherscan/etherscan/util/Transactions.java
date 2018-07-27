@@ -3,14 +3,15 @@ package io.etherscan.etherscan.util;
 import java.util.HashMap;
 import java.util.List;
 
+import io.etherscan.etherscan.data.model.Token;
 import io.etherscan.etherscan.data.model.TokenTransaction;
 
 public class Transactions {
 
-    public static HashMap<String, Double> getErc20TokenBalanceTransactions(String walletAddress, List<TokenTransaction> tokenTransactions) {
+    public static HashMap<Token, Double> getErc20TokenBalanceTransactions(String walletAddress, List<TokenTransaction> tokenTransactions) {
 
 
-        HashMap<String, Double> erc20TokensBalances = new HashMap<>();
+        HashMap<Token, Double> erc20TokensBalances = new HashMap<>();
 
         for (TokenTransaction tokenTransaction : tokenTransactions) {
             Double transactionValue = (double) 0;
@@ -21,12 +22,13 @@ public class Transactions {
                 transactionValue += Double.valueOf(tokenTransaction.getValue());
             }
 
-            if (erc20TokensBalances.containsKey(tokenTransaction.getTokenSymbol())) {
-                transactionValue = erc20TokensBalances.get(tokenTransaction.getTokenSymbol()) + transactionValue;
+            // check if it's already present in the map and get previous value
+            Token token = new Token( tokenTransaction.getTokenName(), tokenTransaction.getTokenSymbol(), Integer.valueOf(tokenTransaction.getTokenDecimal()));
+            if (erc20TokensBalances.containsKey(token)) {
+                transactionValue = erc20TokensBalances.get(token) + transactionValue;
             }
 
-            erc20TokensBalances.put(tokenTransaction.getTokenSymbol(), transactionValue);
-
+            erc20TokensBalances.put(token, transactionValue);
 
         }
         return erc20TokensBalances;
